@@ -34,13 +34,14 @@ Student read_student() {
 }
 
 int main() {
-    Student s1 {"Tomek", "Anonimski", "19749195", "983457", "mężczyzna"};
-    Student s2 {"Joanna", "Mazur", "12159015", "278316", "kobieta"};
-    Student s3 = read_student();
+    Student s[5];
+    s[0] = {"Tomek", "Anonimski", "19749195", "983457", "mężczyzna"};
+    s[1] = {"Joanna", "Mazur", "12159015", "278316", "kobieta"};
+    Student s_read = read_student();
 
-    display_student(s1);
-    display_student(s2);
-    display_student(s3);
+    display_student(s_read);
+    display_student(s[0]);
+    display_student(s[1]);
 
     return 0;
 }
