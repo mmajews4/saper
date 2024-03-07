@@ -1,0 +1,5 @@
+# Ignore compiled files
+*.txt
+
+# Ignore build directories
+cmake-build-debug/
