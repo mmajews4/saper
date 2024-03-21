@@ -32,7 +32,7 @@ MinesweeperBoard::MinesweeperBoard(int w, int h, GameMode m) {
     state = RUNNING;
     moveCount = 0;
 
-    float procent_of_mines;
+    double procent_of_mines;
 
     if(mode == EASY){
         procent_of_mines = 0.1;
@@ -85,11 +85,11 @@ bool MinesweeperBoard::genMine(){
     int col = rand_width(rng);
     int row = rand_height(rng);
     // returns 0 if the place has mine already
-    if(board[row][col].hasMine) return 0;
+    if(board[row][col].hasMine) return false;
 
-    board[row][col].hasMine = 1;
+    board[row][col].hasMine = true;
     // returns 1 if succesfully generated
-    return 1;
+    return true;
 }
 
 
@@ -118,10 +118,12 @@ int MinesweeperBoard::countMines(int row, int col) const {
     if(outsideBoard(row, col)) return -1;
     if(!board[row][col].isRevealed) return -1;
 
-    for(int row_offset = 0; row_offset < 3; row_offset++){      // Przejscie po wszystkich polach wokol pola sprawdzanego
-        for(int col_offset = 0; col_offset < 3; col_offset++){  // Zabezpieczenie przed wyjsciem poza plansze (Segmentation faultem)
-            if(!(row + row_offset < 0 || row + row_offset >= height || col + col_offset < 0 || col + col_offset >= width)){
-                if(board[row + row_offset][col + col_offset].hasMine) mines++;
+    for(int row_offset = -1; row_offset <= 1; row_offset++){      // Przejscie po wszystkich polach wokol pola sprawdzanego
+        for(int col_offset = -1; col_offset <= 1; col_offset++){  // Zabezpieczenie przed wyjsciem poza plansze (Segmentation faultem)
+            if(!(outsideBoard(row + row_offset, col + col_offset))){
+//                if(board[row + row_offset][col + col_offset].hasMine)
+//                  mines++;
+                mines += board[row + row_offset][col + col_offset].hasMine;
             }
         }
     }
@@ -168,7 +170,7 @@ void MinesweeperBoard::revealField(int row, int col){
     if(state != RUNNING) return;
     if(board[row][col].hasFlag) return;
 
-    // If the field was not revealed and there is no mine on it - reveal it --- Czy nie pinienem wykonać terdy countMines()
+    // If the field was not revealed and there is no mine on it - reveal it --- Czy nie powinienem wykonać wtedy countMines()
     if(!board[row][col].hasMine) board[row][col].isRevealed = 1;
 
     // If the field was not revealed and there is a mine on it1:  
@@ -188,6 +190,9 @@ bool MinesweeperBoard::isRevealed(int row, int col) const {
     // return true if the field was revealed
     return true;
 }
+
+
+//--------------------------- to ma być zwykły getter, sprawdzamy stan gry przy odkryciu pola----------------------
 
 
 // return current game state:
@@ -221,8 +226,8 @@ char MinesweeperBoard::getFieldInfo(int row, int col) const {
 
     int minesAround = countMines(row, col);
 
-    if(!board[row][col].isRevealed && minesAround == 0) return ' ';
-    if(!board[row][col].isRevealed && minesAround > 0) return ('0' + minesAround);
+    if(board[row][col].isRevealed && minesAround == 0) return ' ';
+    if(board[row][col].isRevealed && minesAround > 0) return ('0' + minesAround);
 
     // zwróć błąd '%' żeby było bezpieczniej i bo kompliator płacze
     return '%';
