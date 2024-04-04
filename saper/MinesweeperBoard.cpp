@@ -105,6 +105,14 @@ int MinesweeperBoard::getMineCount() const {
     return mineCount;
 }
 
+// return current game state:
+// - FINISHED_LOSS - if the player revealed field with mine
+// - FINISHED_WIN  - if the player won the game (all unrevealed fields have mines)
+// - RUNNING       - if the game is not yet finished
+GameState MinesweeperBoard::getGameState() const {
+    return state;
+}
+
 bool MinesweeperBoard::outsideBoard(int row, int col) const {
     return (row < 0 || row >= height || col < 0 || col >= width);
 }
@@ -170,18 +178,40 @@ void MinesweeperBoard::revealField(int row, int col){
     if(state != RUNNING) return;
     if(board[row][col].hasFlag) return;
 
-    // If the field was not revealed and there is no mine on it - reveal it --- Czy nie powinienem wykonać wtedy countMines()
-    if(!board[row][col].hasMine) board[row][col].isRevealed = 1;
+    // If the field was not revealed and there is no mine on it - reveal it
+    if(!board[row][col].hasMine) board[row][col].isRevealed = true;
 
     // If the field was not revealed and there is a mine on it1:  
     // - if its the first player action - move mine to another location, reveal field (not in DEBUG mode!)
     // - reveal it and finish game
-    if(moveCount == 0){
-        moveCount++;
+    if(moveCount == 0 && board[row][col].hasMine){
 
+        while(!genMine()){};    // generates mines untill it succeds
+        board[row][col].hasMine = false;
+        board[row][col].isRevealed = true;
     }
 
+    if(moveCount != 0 && board[row][col].hasMine){
+        board[row][col].isRevealed = true;
+        state = FINISHED_LOSS;
+        return;
+    }
+
+    if(moveCount == 0){
+        moveCount++;
+    }
+
+    for(int row = 0; row < height; row++){
+        for(int col = 0; col < width; col++){
+            if(!board[row][col].hasMine && board[row][col].isRevealed) {
+                state = RUNNING;
+                return;
+            }
+        }
+    }
+    state = FINISHED_WIN;
 }
+
 
 bool MinesweeperBoard::isRevealed(int row, int col) const {
     // return false if the field is not revealed or if it is outside the board
@@ -189,25 +219,6 @@ bool MinesweeperBoard::isRevealed(int row, int col) const {
     if(!board[row][col].isRevealed) return false;
     // return true if the field was revealed
     return true;
-}
-
-
-//--------------------------- to ma być zwykły getter, sprawdzamy stan gry przy odkryciu pola----------------------
-
-
-// return current game state:
-// - FINISHED_LOSS - if the player revealed field with mine
-// - FINISHED_WIN  - if the player won the game (all unrevealed fields have mines)
-// - RUNNING       - if the game is not yet finished 
-GameState MinesweeperBoard::getGameState() const {  // Dlaczego const? nie lepiej byłoby zmieniać state na obecny stan?
-
-    for(int row = 0; row < height; row++){
-        for(int col = 0; col < width; col++){
-            if(board[row][col].hasMine && board[row][col].isRevealed) return FINISHED_LOSS; /* state = FINISHED_LOSS */
-            if(!board[row][col].hasMine && board[row][col].isRevealed) return RUNNING;
-        }
-    }
-    return FINISHED_WIN;
 }
 
 

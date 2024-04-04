@@ -8,7 +8,7 @@ class MSBoardTextView{
     MinesweeperBoard &board;
 
 public:
-    MSBoardTextView( MinesweeperBoard &);
+    MSBoardTextView( MinesweeperBoard & );
     void display();
 };
 

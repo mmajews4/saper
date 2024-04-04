@@ -12,7 +12,7 @@ void MSBoardTextView::display()
 {
     for(int row = 0; row < board.getBoardHeight(); row++){
         for(int col = 0; col < board.getBoardWidth(); col++){
-            cout << board.getFieldInfo(row, col) << " ";
+            cout << board.getFieldInfo(row, col) << "  ";
         }
         cout << endl;
     }
