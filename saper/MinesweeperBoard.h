@@ -35,6 +35,17 @@ class MinesweeperBoard
     // returns 0 in not
     bool genMine();
 
+    // Update state such as:
+    // - FINISHED_WIN  - if the player won the game (all unrevealed fields have mines)
+    // - RUNNING       - if the game is not yet finished 
+    void updateGameState();
+
+    // If reveald field minecount is 0, then reveal all fields around it
+    void emptyFieldExpansion(int row, int col);
+
+    // Rearranges mines if they are in range of the first move
+    void firstMove(int row, int col);
+
 public:
     MinesweeperBoard();
     MinesweeperBoard(int, int, GameMode);
@@ -63,6 +74,7 @@ public:
     // - either row or col is outside board
     // - game is already finished
     void toggleFlag(int row, int col);
+
 
     // try to reveal the field at (row,col)
     // Do nothing if any of the following is true

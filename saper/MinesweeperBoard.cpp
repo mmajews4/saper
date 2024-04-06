@@ -167,6 +167,57 @@ void MinesweeperBoard::toggleFlag(int row, int col){
 }
 
 
+void MinesweeperBoard::emptyFieldExpansion(int row, int col){
+
+    if(countMines(row, col) != 0) return;
+
+    for(int row_offset = -1; row_offset <= 1; row_offset++){      // Przejscie po wszystkich polach wokol pola sprawdzanego
+        for(int col_offset = -1; col_offset <= 1; col_offset++){  // Zabezpieczenie przed wyjsciem poza plansze (Segmentation faultem)
+            if(!(outsideBoard(row + row_offset, col + col_offset))){
+                revealField(row + row_offset, col + col_offset);
+            }
+        }
+    }
+}
+
+
+void MinesweeperBoard::updateGameState(){
+
+    for(int row = 0; row < height; row++){
+        for(int col = 0; col < width; col++){
+            if(!board[row][col].hasMine && !board[row][col].isRevealed) {
+                state = RUNNING;
+                return;
+            }
+        }
+    }
+    state = FINISHED_WIN;
+}
+
+// Rearranges mines if they are in range of the first move
+void MinesweeperBoard::firstMove(int row, int col){
+
+    if(countMines(row, col) == 0) return;
+
+    for(int row_offset = -1; row_offset <= 1; row_offset++){      // Przejscie po wszystkich polach wokol pola sprawdzanego
+        for(int col_offset = -1; col_offset <= 1; col_offset++){  // Zabezpieczenie przed wyjsciem poza plansze (Segmentation faultem)
+            if(!(outsideBoard(row + row_offset, col + col_offset))){
+                if(board[row + row_offset][col + col_offset].hasMine){
+
+                    while(!genMine()){};    // generates mines untill it succeds
+                    board[row + row_offset][col + col_offset].hasMine = false;
+                }
+            }
+        }
+    }
+    board[row][col].isRevealed = true;
+    moveCount++;
+
+    // It tries to rearrange mines until it succeds
+    firstMove(row, col);
+}
+
+
 void MinesweeperBoard::revealField(int row, int col){
     // Do nothing if any of the following is true
     // - field was already revealed
@@ -184,32 +235,22 @@ void MinesweeperBoard::revealField(int row, int col){
     // If the field was not revealed and there is a mine on it1:  
     // - if its the first player action - move mine to another location, reveal field (not in DEBUG mode!)
     // - reveal it and finish game
-    if(moveCount == 0 && board[row][col].hasMine){
+    if(moveCount == 0){
 
-        while(!genMine()){};    // generates mines untill it succeds
-        board[row][col].hasMine = false;
-        board[row][col].isRevealed = true;
+        cout << "First Move" << endl;
+
+        firstMove(row, col);
     }
 
     if(moveCount != 0 && board[row][col].hasMine){
         board[row][col].isRevealed = true;
         state = FINISHED_LOSS;
+        moveCount++;
         return;
     }
 
-    if(moveCount == 0){
-        moveCount++;
-    }
-
-    for(int row = 0; row < height; row++){
-        for(int col = 0; col < width; col++){
-            if(!board[row][col].hasMine && board[row][col].isRevealed) {
-                state = RUNNING;
-                return;
-            }
-        }
-    }
-    state = FINISHED_WIN;
+    emptyFieldExpansion(row, col);
+    updateGameState();
 }
 
 

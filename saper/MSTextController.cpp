@@ -27,8 +27,8 @@ void MSTextController::play()
                 cout << "Error: wrong action number" << endl;
                 break;
         }
-        board.debug_display();
         view.display();
+//        board.debug_display();
     }
     if(board.getGameState() == FINISHED_WIN){
         cout << "YOU WIN!" << endl;
