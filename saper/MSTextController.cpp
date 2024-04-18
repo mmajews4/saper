@@ -4,7 +4,7 @@ using namespace std;
 
 MSTextController::MSTextController(MinesweeperBoard & b, MSBoardTextView & v) : board(b), view(v)
 {
-
+    row = col = action = -1;
 }
 
 void MSTextController::play()

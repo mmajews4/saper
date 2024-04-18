@@ -236,9 +236,6 @@ void MinesweeperBoard::revealField(int row, int col){
     // - if its the first player action - move mine to another location, reveal field (not in DEBUG mode!)
     // - reveal it and finish game
     if(moveCount == 0){
-
-        cout << "First Move" << endl;
-
         firstMove(row, col);
     }
 
