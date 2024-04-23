@@ -8,7 +8,7 @@
 
 class MSSFMLView {
 
-    MinesweeperBoard board;
+    MinesweeperBoard &board;
 
     int window_width, window_height;
     int height, width;
@@ -16,6 +16,9 @@ class MSSFMLView {
     int text_left_offset, text_top_offset;
     int tile_press_row, tile_press_col;
     std::string tile_text;
+    sf::Font font;
+    sf::RectangleShape rectangle;
+    sf::Text text;
 
 public:
     MSSFMLView(MinesweeperBoard &);

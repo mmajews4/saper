@@ -4,6 +4,11 @@
 
 class MSSFMLController {
 
+public:
+    MSSFMLController();
+
+    void play();
+
 };
 
 

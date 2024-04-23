@@ -11,10 +11,10 @@ using namespace std;
 int main() {
 
     MinesweeperBoard board (5, 5, GameMode::NORMAL);
-    MSBoardTextView view ( board );
-    MSTextController ctrl ( board, view );
+    MSBoardTextView console_view ( board );
+    MSTextController console_ctrl ( board, console_view );
 
-    ctrl.play();
+    console_ctrl.play();
     return 0;
 }
 */
@@ -30,6 +30,16 @@ int main()
     // symulujemy rozgrywkę
     board.toggleFlag(0,0);
     board.revealField(2,3);
+    board.revealField(0,2);
+    board.revealField(5,0);
+    board.revealField(6,1);
+    board.revealField(5,3);
+    board.revealField(6,3);
+
+    MSBoardTextView console_view ( board );
+    console_view.display();
+//    MSTextController console_ctrl ( board, console_view );
+//    console_ctrl.play();
 
     while (window.isOpen())
     {
