@@ -23,7 +23,7 @@ public:
     MSSFMLView(MinesweeperBoard &);
     int getWindowHeight() const;
     int getWindowWidth() const;
-    double TileLength() const;
+    double tileLength() const;
     double getTopOffset() const;
     double getLeftOffset() const;
     void draw(sf::RenderWindow &);

@@ -50,6 +50,9 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            else {
+                //ctrl.handle_event(event);
+            }
         }
 
         ctrl.play(window);

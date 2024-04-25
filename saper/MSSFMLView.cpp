@@ -21,7 +21,7 @@ int MSSFMLView::getWindowWidth() const
     return window_width;
 }
 
-double MSSFMLView::TileLength() const
+double MSSFMLView::tileLength() const
 {
     return (tile_size + spacing + (tile_frame * 2));
 }
@@ -35,8 +35,6 @@ double MSSFMLView::getLeftOffset() const
 {
     return left_offset;
 }
-
-//void MSSFMLView::drawTile(sf::RenderWindow &window)
 
 void MSSFMLView::draw(sf::RenderWindow &window)
 {
@@ -85,6 +83,12 @@ void MSSFMLView::draw(sf::RenderWindow &window)
 
     // clear the window with black color
     window.clear(sf::Color::Black);
+
+    // Draw outer frame of the board
+    rectangle.setPosition(left_offset, top_offset);
+    rectangle.setSize(sf::Vector2f(height * tileLength(), tile_size * width));
+    window.draw(rectangle);
+    rectangle.setSize(sf::Vector2f(tile_size, tile_size));
 
     // draw everything here...
     for(int row = 0; row < height; row++){

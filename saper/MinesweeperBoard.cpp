@@ -163,7 +163,7 @@ void MinesweeperBoard::toggleFlag(int row, int col){
     if(state != RUNNING) return;
 
     // if the field at (row,col) was not revealed - change flag status for this field 
-    board[row][col].hasFlag = 1;
+    board[row][col].hasFlag = !board[row][col].hasFlag;
 }
 
 

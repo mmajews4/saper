@@ -18,8 +18,8 @@ void MSSFMLController::play(sf::RenderWindow &window)
         else if(event.type == sf::Event::MouseButtonPressed)
         {
             // calculate on wich tile action was taken, floor to not count -0.xx as 0
-            tile_press_col = floor((event.mouseButton.x - view.getLeftOffset())/view.TileLength());
-            tile_press_row = floor((event.mouseButton.y - view.getTopOffset())/view.TileLength());
+            tile_press_col = floor((event.mouseButton.x - view.getLeftOffset())/view.tileLength());
+            tile_press_row = floor((event.mouseButton.y - view.getTopOffset())/view.tileLength());
 
             if(!(tile_press_col >= 0 && tile_press_col < board.getBoardWidth() && tile_press_row >= 0 && tile_press_row < board.getBoardHeight()))
             {
