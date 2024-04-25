@@ -14,7 +14,6 @@ class MSSFMLView {
     int height, width;
     double tile_size, spacing, left_offset, top_offset, tile_frame;
     int text_left_offset, text_top_offset;
-    int tile_press_row, tile_press_col;
     std::string tile_text;
     sf::Font font;
     sf::RectangleShape rectangle;
@@ -24,6 +23,9 @@ public:
     MSSFMLView(MinesweeperBoard &);
     int getWindowHeight() const;
     int getWindowWidth() const;
+    double TileLength() const;
+    double getTopOffset() const;
+    double getLeftOffset() const;
     void draw(sf::RenderWindow &);
 
 };
