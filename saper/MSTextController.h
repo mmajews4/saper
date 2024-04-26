@@ -17,6 +17,8 @@ class MSTextController {
 
 public:
     MSTextController(MinesweeperBoard &, MSBoardTextView &);
+
+    // Function let player communicate with the board using serial terminal
     void play();
 };
 

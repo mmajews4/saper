@@ -21,18 +21,19 @@ void MSSFMLController::play(sf::RenderWindow &window)
             tile_press_col = floor((event.mouseButton.x - view.getLeftOffset())/view.tileLength());
             tile_press_row = floor((event.mouseButton.y - view.getTopOffset())/view.tileLength());
 
-            if(!(tile_press_col >= 0 && tile_press_col < board.getBoardWidth() && tile_press_row >= 0 && tile_press_row < board.getBoardHeight()))
+            if(!(tile_press_col >= 0 && tile_press_col < board.getBoardWidth() && tile_press_row >= -1 && tile_press_row < board.getBoardHeight()))
             {
-                std::cout << "Press out of board" << std::endl;
+            }
+            else if(tile_press_row == -1)
+            {
+                board.restart();
             }
             else if(event.mouseButton.button == sf::Mouse::Left)
             {
-                std::cout << "Reveal (" << tile_press_col << "," << tile_press_row << ")" << std::endl;
                 board.revealField(tile_press_row, tile_press_col);
             }
             else if(event.mouseButton.button == sf::Mouse::Right)
             {
-                std::cout << "Place flag (" << tile_press_col << "," << tile_press_row << ")" << std::endl;
                 board.toggleFlag(tile_press_row, tile_press_col);
             }
             view.draw(window);

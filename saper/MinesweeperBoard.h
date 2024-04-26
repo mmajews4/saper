@@ -46,9 +46,15 @@ class MinesweeperBoard
     // Rearranges mines if they are in range of the first move
     void firstMove(int row, int col);
 
+    // Reveal all fields with mines at loss
+    void revealMines();
+
 public:
     MinesweeperBoard();
     MinesweeperBoard(int, int, GameMode);
+
+    // Resets board to its starting state
+    void restart();
 
     // simple getters - return appropriate values (passed to or calculated in constructor)
     int getBoardWidth() const;

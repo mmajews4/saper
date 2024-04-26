@@ -9,6 +9,8 @@ class MSBoardTextView{
 
 public:
     MSBoardTextView( MinesweeperBoard & );
+
+    // Function displays board on serial terminal
     void display();
 };
 

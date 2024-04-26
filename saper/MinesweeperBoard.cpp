@@ -25,10 +25,15 @@ MinesweeperBoard::MinesweeperBoard() {
 
 
 MinesweeperBoard::MinesweeperBoard(int w, int h, GameMode m) {
-
     width = w;
     height = h;
     mode = m;
+    restart();
+}
+
+// Function sets starting conditions and generates mines
+void MinesweeperBoard::restart() {
+    
     state = RUNNING;
     moveCount = 0;
 
@@ -217,6 +222,16 @@ void MinesweeperBoard::firstMove(int row, int col){
     firstMove(row, col);
 }
 
+void MinesweeperBoard::revealMines(){
+    for(int row = 0; row < height; row++){
+        for(int col = 0; col < width; col++){
+            if(board[row][col].hasMine) {
+                board[row][col].isRevealed = true;
+            }
+        }
+    }
+}
+
 
 void MinesweeperBoard::revealField(int row, int col){
     // Do nothing if any of the following is true
@@ -243,6 +258,9 @@ void MinesweeperBoard::revealField(int row, int col){
         board[row][col].isRevealed = true;
         state = FINISHED_LOSS;
         moveCount++;
+
+        // Reveal all fields with mines at loss
+        revealMines();       
         return;
     }
 

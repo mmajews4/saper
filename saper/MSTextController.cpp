@@ -7,6 +7,7 @@ MSTextController::MSTextController(MinesweeperBoard & b, MSBoardTextView & v) : 
     row = col = action = -1;
 }
 
+// Function let player communicate with the board using serial terminal
 void MSTextController::play()
 {
     view.display();
@@ -15,20 +16,20 @@ void MSTextController::play()
         cin >> col >> row >> action;
 
         switch (action) {
-            case REVEAL:
-                board.revealField(row, col);
-                break;
+        case REVEAL:
+            board.revealField(row, col);
+            break;
 
-            case PLACE_FLAG:
-                board.toggleFlag(row, col);
-                break;
+        case PLACE_FLAG:
+            board.toggleFlag(row, col);
+            break;
 
-            default:
-                cout << "Error: wrong action number" << endl;
-                break;
+        default:
+            cout << "Error: wrong action number" << endl;
+            break;
         }
         view.display();
-//        board.debug_display();
+
     }
     if(board.getGameState() == FINISHED_WIN){
         cout << "YOU WIN!" << endl;
