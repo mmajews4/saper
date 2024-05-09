@@ -11,7 +11,6 @@ MSSFMLView::MSSFMLView(MinesweeperBoard &b) : board(b)
     bomb_size = 12, bomb_offset = 12;
     flag_size = 20, flag_triangles_offset = 10, flag_offset_w = 15, flag_offset_h = 15;
     game_state_size = 90;
-//    flag_tri_h_offset_1 = 0;
     tile_text = "";
 }
 
@@ -69,16 +68,13 @@ void MSSFMLView::draw(sf::RenderWindow &window)
     rectangle.setOutlineThickness(tile_frame);
     rectangle.setOutlineColor(sf::Color(120, 120, 120));
 
-    // I do it that way bezause it somehow works differetn using makefile,vscode and clion
-    // Get path to "arial.ttf"
-    std::filesystem::path currentPath = std::filesystem::current_path();
-    std::filesystem::path fontPath = currentPath / "arial.ttf";
-
     // Load the font
     sf::Font font;
-    if (!font.loadFromFile(fontPath.string())) {
-        std::cerr << "Failed to load font." << std::endl;
-        exit(EXIT_FAILURE);
+    if (!font.loadFromFile("../arial.ttf")) {
+        if (!font.loadFromFile("arial.ttf")) {
+            std::cerr << "Failed to load font." << std::endl;
+            exit(EXIT_FAILURE);
+        }
     }
 
     // Create a text object
